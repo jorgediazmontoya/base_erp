@@ -31,6 +31,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
+        'tenant.web' => [
+            \Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,
+            \Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession::class,
+        ],
+        'tenant.api' => [
+            \Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,
+        ],
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -39,13 +46,6 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
-        'tenant.web' => [
-            \Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,
-            \Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession::class,
-        ],
-        'tenant.api' => [
-            \Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,
         ],
         'api' => [
             'throttle:api',

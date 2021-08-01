@@ -13,21 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['tenant.web'])->group(function () {
-
-    // Rutas de inquilinos
-    Route::get('/', function () {
-        return view('welcome');
-    });
-
-    Route::get('/user', function () {
-        return app('currentTenant');
-    });
-
+// Tenants routes
+Route::get('/', function () {
+    return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+/*Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';*/

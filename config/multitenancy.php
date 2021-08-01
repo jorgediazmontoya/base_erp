@@ -1,9 +1,10 @@
 <?php
 
-use Spatie\Multitenancy\Models\Tenant;
+use App\Models\CustomTenant;
 use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Events\CallQueuedListener;
 use Illuminate\Broadcasting\BroadcastEvent;
+use Spatie\Multitenancy\Tasks\PrefixCacheTask;
 use Spatie\Multitenancy\Actions\MigrateTenantAction;
 use Illuminate\Notifications\SendQueuedNotifications;
 use Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask;
@@ -17,7 +18,7 @@ return [
      *
      * Enable multitenancy
      */
-    'enabled' => true,
+    'enabled' => (bool) true,
 
     /*
      * This class is responsible for determining which tenant should be current
@@ -41,7 +42,8 @@ return [
      * A valid task is any class that implements Spatie\Multitenancy\Tasks\SwitchTenantTask
      */
     'switch_tenant_tasks' => [
-        Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
+        \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
+        \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
     ],
 
     /*
@@ -49,7 +51,7 @@ return [
      *
      * It must be or extend `Spatie\Multitenancy\Models\Tenant::class`
      */
-    'tenant_model' => \App\Models\Tenant::class,
+    'tenant_model' => CustomTenant::class,
 
     /*
      * If there is a current tenant when dispatching a job, the id of the current tenant

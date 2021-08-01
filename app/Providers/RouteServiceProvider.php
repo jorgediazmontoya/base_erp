@@ -38,10 +38,17 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+            $domain = parse_url(config('app.url'), PHP_URL_HOST);
             $api = ['api'];
             $web = ['web'];
 
-            if (config('multitenancy.enabled')) {
+            Route::domain($domain)
+                ->prefix('api')
+                ->middleware($api)
+                ->namespace($this->namespace)
+                ->group(base_path('routes/landlord/api.php'));
+
+            if (config('multitenancy.enabled') == true) {
                 array_push($api, 'tenant.api');
                 array_push($web, 'tenant.web');
             }
