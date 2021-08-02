@@ -7,5 +7,6 @@ return [
     'no-authorize' => 'Se requiere autenticación para acceder a este recurso.',
     'internal-server-error' => 'Error inesperado, por favor intente luego.',
     'not-found' => 'No se encontró la URL especificada.',
+    'no-content' => 'No hay contenido.',
 ];
 ?>

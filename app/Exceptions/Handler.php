@@ -69,7 +69,7 @@ class Handler extends ExceptionHandler
                 }
 
                 if ($exception instanceof MethodNotAllowedHttpException) {
-                    return $this->error(__('messages.method-not-allowed'), Response::HTTP_METHOD_NOT_ALLOWED);
+                    return $this->error($request->getPathInfo(), $exception, __('messages.method-not-allowed'), Response::HTTP_METHOD_NOT_ALLOWED);
                 }
 
                 if ($exception instanceof HttpException) {

@@ -24,9 +24,9 @@ use App\Http\Controllers\Api\UserController;
 *
 *Tenants routes
 */
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{user}', [UserController::class, 'show']);
-Route::post('/users', [UserController::class, 'store']);
+Route::middleware('auth:api')->get('/users', [UserController::class, 'index']);
+Route::middleware('auth:api')->get('/users/{user}', [UserController::class, 'show']);
+Route::middleware('auth:api')->post('/users', [UserController::class, 'store']);
 
 Route::get('/as-tenant ', function () {
     return app('currentTenant');
