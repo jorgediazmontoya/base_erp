@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Spatie\Multitenancy\Models\Tenant;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Passport\PersonalAccessClient;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Passport\Client as PassportClient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -21,7 +24,7 @@ class CustomTenant extends Tenant
 
     protected $fillable = ['name', 'domain'];
 
-    protected $hidden = ['database', 'deleted_at'];
+    protected $hidden = ['deleted_at'];
 
     /**
      * boot
@@ -75,27 +78,27 @@ class CustomTenant extends Tenant
         ]);
     }
 
-     /**
-      * setNameAttribute
-      *
-      * Lower case tenant name
-      * @param  mixed $value
-      * @return void
-      */
-     public function setNameAttribute ($value) {
+    /**
+     * setNameAttribute
+    *
+    * Lower case tenant name
+    * @param  mixed $value
+    * @return void
+    */
+    public function setNameAttribute ($value) {
         $this->attributes['name'] = strtolower($value);
-     }
+    }
 
-     /**
-      * getNameAttribute
-      *
-      * Accesor uppercase tenant name
-      * @param  mixed $value
-      * @return void
-      */
-     public function getNameAttribute ($value) {
+    /**
+     * getNameAttribute
+    *
+    * Accesor uppercase tenant name
+    * @param  mixed $value
+    * @return void
+    */
+    public function getNameAttribute ($value) {
         return ucwords($value);
-     }
+    }
 
      /**
       * setDomainAttribute

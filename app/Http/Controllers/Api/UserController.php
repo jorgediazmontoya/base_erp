@@ -25,7 +25,7 @@ class UserController extends Controller implements IUserController
         $type_sort = $request->type_sort ?: 'desc';
 
         $users = User::orderBy($sort, $type_sort)
-            ->simplePaginate(7);
+            ->simplePaginate($request->rows);
 
         return $this->success($users);
     }
