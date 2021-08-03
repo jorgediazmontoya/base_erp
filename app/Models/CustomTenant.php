@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use DB;
 use Illuminate\Support\Str;
 use Spatie\Multitenancy\Models\Tenant;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +21,7 @@ class CustomTenant extends Tenant
 
     protected $fillable = ['name', 'domain'];
 
-    protected $hidden = ['database'];
+    protected $hidden = ['database', 'deleted_at'];
 
     /**
      * boot
