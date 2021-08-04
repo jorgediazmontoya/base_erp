@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Spatie\Multitenancy\Models\Tenant;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,7 +22,7 @@ class CustomTenant extends Tenant
 
     protected $fillable = ['name', 'domain'];
 
-    protected $hidden = ['database', 'deleted_at'];
+    protected $hidden = ['deleted_at'];
 
     /**
      * boot

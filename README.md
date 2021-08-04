@@ -1,62 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Levantar aplicación
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Instalación de dependencias 
+Ejecutar en la terminal el comando:
 
-## About Laravel
+```sh
+    composer install
+```
+Para instalar las dependencias necesarias.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Ejecutar migraciones
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Previo a esto se debe crear 2 base de datos, donde la base de datos ***landlord_db*** es donde guardaremos los inquilinos de nuestra aplicación y ***db_main*** es donde guardaremos al usuario y cliente principal o dueño de la aplicación. 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Es importante que el archivo *.env* tenga las siguientes variables:
+```sh
+DB_CONNECTION=tenant
+DB_HOST=host
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
 
-## Learning Laravel
+DB_LAND=landlord_db
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+PASSPORT_PERSONAL_ACCESS_CLIENT_ID=
+PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Como notaran, no necesitamos que la variable *DB_DATABASE* tenga el nombre de la base de datos, puesto que el cambio de base de datos es dinamico de acuerdo a la instancia de nuestra aplicación, pero es importante que DB_CONNECTION sea = *tenant*
 
-## Laravel Sponsors
+Tambien observamos la aparación de 2 variables nuevas: *passport_personal_access_client_id*
+*passport_personal_access_client_secret*
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Que mas adelante veremos que valor tendrán.
 
-### Premium Partners
+Una vez preparado esto, ejecutamos:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+```sh
+    php artisan tenants:artisan migrate
+```
 
-## Contributing
+Una vez ejecutadas las migraciones, necesitaremos generar unas llaves públicas y privadas necesarias para la autenticación con oauth2.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Esto lo podemos lograr ejecutando el comando de passport:
+```sh
+    php artisan passport:keys
+```
 
-## Code of Conduct
+Finalmente lo que debemos hacer es generar el secret client para nuestra aplicación, con el comando:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```sh
+    php artisan passport:client --password
+```
 
-## Security Vulnerabilities
+Esto nos generará el client Id y el client Secret que debemos colocar en las variables de entorno adicionales que agregamos en el **.env**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Posterior a esto podemos acceder a la vista **/register** y crear un usuario a manera de ejemplo con el formulario por defecto de laravel, y con las credenciales de ese usuario podemos efectuar una autenticación para obtener el token con el que podemos acceder a nuestros recursos protegidos.
+
+## **Autenticando al usuario dueño de la aplicación**
+![login](docs/1.png)
+
+Como se observa en la imagen se debe enviar el clientId y clientSecret junto con las credenciales del usuario de ese tenant principal para poder obtener el token.
+
+## **Listando los inquilinos de nuestra aplicación con el usuario autenticado**
+![inquilinos](docs/2.png)
+
+Cabe mencionar que se debe enviar el token generado en el Authorization de tipo Bearer token.
+
+## **Creando un nuevo inquilino**
+![nuevo_inquilino](docs/3.png)
+
+Al crear el inquilino se genera su propia base de datos, se realizan sus respectivas migraciones y se añade el clientId para que los usuarios de esa instancia puedan autenticarse.
+
+## **Autenticando un usuario en el nuevo inquilino *educalinks***
+![nuevo_inquilino](docs/4.png)
+
+
+## **Listando usuarios de ese inquilino***
+![nuevo_inquilino](docs/5.png)
+
+Ojo que /api/users es una ruta protegida y se debe enviar el jwt token generado para el usuario de educalinks
+
+## **Intentando acceder a los inquilinos existentes desde un inquilino***
+![nuevo_inquilino](docs/6.png)
+
+**/api/tenants** a mas de ser una ruta protegida también es un recurso al cual no pueden acceder los inquilinos, pues es solo accesible para el dueño o landlord. Por lo tanto nos devuelve un error esperado en formato json con el detalle de lo acontecido.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
