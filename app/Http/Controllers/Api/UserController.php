@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Cache\UserCache;
 use App\Models\User;
 use App\Traits\RestResponse;
 use Illuminate\Http\Request;
@@ -15,18 +16,35 @@ class UserController extends Controller implements IUserController
     use RestResponse;
 
     /**
+     * repoUser
+     *
+     * @var mixed
+     */
+    private $repoUser;
+
+    /**
+     * __construct
+     *
+     * @return void
+     */
+    public function __construct (UserCache $repoUser) {
+        $this->repoUser = $repoUser;
+    }
+
+    /**
      * index
      *
      * List all users
      * @return void
      */
     public function index (Request $request) {
-        $sort = $request->sort ?: 'id';
-        $type_sort = $request->type_sort ?: 'desc';
+        $startTime = microtime(true);
 
-        $users = User::orderBy($sort, $type_sort)
-            ->simplePaginate(7);
+        $users = $this->repoUser->all($request);
 
+        $endTime = microtime(true);
+
+        dump($startTime, $endTime);
         return $this->success($users);
     }
 
@@ -49,7 +67,8 @@ class UserController extends Controller implements IUserController
      * @return void
      */
     public function store (StoreUserRequest $request) {
-        $user = User::create($request->all());
+        $user = new User($request->all());
+        $user = $this->repoUser->save($user);
         return $this->success($user, Response::HTTP_CREATED);
     }
 }
