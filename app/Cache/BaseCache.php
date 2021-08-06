@@ -18,9 +18,16 @@ abstract class BaseCache implements IBaseRepository {
      *
      * @return void
      */
-    public function __construct (Object $baseRepository, string $key) {
+    public function __construct (Object $baseRepository) {
+        $key = request()->url();
+        $queryParams = request()->query();
+
+        ksort($queryParams);
+        $queryString = http_build_query($queryParams);
+        $fullUrl = "{$key}?{$queryString}";
+
         $this->repository = $baseRepository;
-        $this->key = $key;
+        $this->key = $fullUrl;
         $this->cache = new Cache();
     }
 }
