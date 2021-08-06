@@ -1,21 +1,14 @@
 <?php
 
-use App\Models\Client;
 use App\Models\CustomTenant;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TenantController;
 
-// Need security routes
 Route::apiResource('tenants', TenantController::class)->middleware('auth:api');
 
-Route::get('/tenants/{tenant}/clients', function (CustomTenant $tenant) {
-    //$result = $tenant->execute(fn (CustomTenant $tenant) => cache()->flush());
-    /*$result = $tenant->execute(function (CustomTenant $tenant) {
-
-    });*/
-
-    $client = Client::where('password_client', '=', true)->first();
-    
-    dd($client);
+Route::delete('/tenants/{tenant}/flush-cache', function (CustomTenant $tenant) {
+    Cache::forget($tenant);
+    return response()->json(['success' => $tenant], Response::HTTP_OK);
 })->middleware('auth:api');

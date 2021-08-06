@@ -13,7 +13,7 @@ class UserCache extends BaseCache {
      * @return void
      */
     public function __construct(UserRepository $userRepository) {
-        parent::__construct($userRepository, 'user');
+        parent::__construct($userRepository);
     }
 
     /**
@@ -24,7 +24,6 @@ class UserCache extends BaseCache {
      */
     public function all($request)
     {
-        //$this->cache::forget($this->key);
         return $this->cache::remember($this->key, self::TTL, function () use ($request) {
             return $this->repository->all($request);
         });
@@ -39,6 +38,6 @@ class UserCache extends BaseCache {
     public function save(Model $model)
     {
         $this->cache::forget($this->key);
-        $this->repository->save($model);
+        return $this->repository->save($model);
     }
 }
