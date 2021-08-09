@@ -49,11 +49,15 @@ Esto lo podemos lograr ejecutando el comando de passport:
 
 Finalmente lo que debemos hacer es generar el secret client para nuestra aplicación, con el comando:
 
+**Para esto es importante tomar en cuenta un detalle, resulta que para generar el client Secret de nuestra aplicación, passport no sabe a que base de datos apuntar al tener configurado tenant en su variable *DB_CONNECTION*, es por esto que debemos configurar momentaneamente la variable con el driver de nuestra base de datos principal, que en nuestro caso es db_main, cambiamos el DB_CONNECTION, y la variable DB_DATABASE con el nombre de nuestra base de datos principal, una vez hecho esto, no olvidar actualizar el caché de laravel y luego correr el siguiente comando.**
+
 ```sh
     php artisan passport:client --password
 ```
 
 Esto nos generará el client Id y el client Secret que debemos colocar en las variables de entorno adicionales que agregamos en el **.env**
+
+Luego ya podemos dejar las variables de entorno **DB_CONNECTION** y **DB_DATABASE**, como estaban anteriormente.
 
 Posterior a esto podemos acceder a la vista **/register** y crear un usuario a manera de ejemplo con el formulario por defecto de laravel, y con las credenciales de ese usuario podemos efectuar una autenticación para obtener el token con el que podemos acceder a nuestros recursos protegidos.
 
