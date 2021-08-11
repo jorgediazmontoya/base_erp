@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\CustomTenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\UserController;
+use App\Mail\EmailInvitation;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +34,11 @@ Route::middleware('auth:api')->apiResource('files', FileController::class);
  *
  * Current tenant
  */
-Route::get('/as-tenant ', function () {
-    return app('currentTenant');
+Route::get('/as-tenant', function () {
+    return [
+        'name' => app('currentTenant')->name,
+        'domain' => app('currentTenant')->domain
+    ];
 });
 
 /**
@@ -57,3 +63,10 @@ Route::post('/logout', function (Request $request) {
 Route::get('/users', [UserController::class, 'index'])->middleware('auth:api');
 Route::get('/users/{user}', [UserController::class, 'show'])->middleware('auth:api');
 Route::post('/users', [UserController::class, 'store'])->middleware('auth:api');
+
+Route::post('/send-mail', function (Request $request) {
+    Mail::to($request->email)->send(new EmailInvitation());
+    return response()->json([
+        'info' => "Invitación enviada a {$request->email}"
+    ]);
+})->middleware('auth:api');

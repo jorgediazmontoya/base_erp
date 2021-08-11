@@ -41,6 +41,8 @@ return [
      */
     'switch_tenant_tasks' => [
         \App\TenantTask\FileSystemTask::class,
+        \App\TenantTask\LogTask::class,
+        \App\TenantTask\EmailTask::class,
         \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
         \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
     ],

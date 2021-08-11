@@ -32,11 +32,11 @@ class TenantController extends Controller implements ITenantController
         $tenant = null;
 
         if ($search == '') {
-            $tenant = CustomTenant::where('domain', '<>', $this->domain)
+            $tenant = CustomTenant::with('mail')->where('domain', '<>', $this->domain)
                 ->orderBy('id', 'desc')
                 ->simplePaginate($request->size ?: 10);
         } else {
-            $tenant = CustomTenant::where('domain', '<>', $this->domain)
+            $tenant = CustomTenant::with('mail')->where('domain', '<>', $this->domain)
                 ->where('name', $search)
                 ->orWhere('domain', $search)
                 ->first();
