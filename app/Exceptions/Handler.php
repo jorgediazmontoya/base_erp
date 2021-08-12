@@ -13,6 +13,7 @@ use App\Exceptions\Custom\BadRequestException;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\Custom\UnprocessableException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Spatie\Multitenancy\Exceptions\NoCurrentTenant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -56,6 +57,11 @@ class Handler extends ExceptionHandler
         });*/
 
         $this->renderable(function (Throwable $exception, $request) {
+            if ($exception instanceof NoCurrentTenant) {
+                return $this->error($request->getPathInfo(), $exception,
+                    __('messages.no-current-tenant'), Response::HTTP_CONFLICT);
+            }
+
             if($request->is('api/*')) {
                 if ($exception instanceof ModelNotFoundException) {
                     $model = strtolower(class_basename($exception->getModel()));
@@ -107,8 +113,7 @@ class Handler extends ExceptionHandler
 
                 if (config('app.debug')) {
                     //return parent::render($request, $exception);
-                    return $this
-                        ->error($request->getPathInfo(), $exception, $exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+                    return $this->error($request->getPathInfo(), $exception, $exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
                 return $this->error($request->getPathInfo(), $exception, __('messages.internal-server-error'), Response::HTTP_INTERNAL_SERVER_ERROR);

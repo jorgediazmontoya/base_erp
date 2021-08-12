@@ -37,13 +37,19 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'tenant_log'],
             'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'tenant_log' => [
+            'driver' => 'single',
+            'path' => null,
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 

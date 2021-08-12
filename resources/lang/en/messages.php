@@ -8,5 +8,6 @@ return [
     'internal-server-error' => 'Unexpected error, please try again later.',
     'not-found' => 'The specified URL was not found. ',
     'no-content' => 'No content.',
+    'no-current-tenant' => 'No current tenant.',
 ];
 ?>

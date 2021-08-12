@@ -27,10 +27,20 @@ class TenantController extends Controller implements ITenantController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $tenant = CustomTenant::where('domain', '<>', $this->domain)
-            ->orderBy('id', 'desc')
-            ->simplePaginate(10);
+    public function index(Request $request) {
+        $search = $request->search ?: '';
+        $tenant = null;
+
+        if ($search == '') {
+            $tenant = CustomTenant::with('mail')->where('domain', '<>', $this->domain)
+                ->orderBy('id', 'desc')
+                ->simplePaginate($request->size ?: 10);
+        } else {
+            $tenant = CustomTenant::with('mail')->where('domain', '<>', $this->domain)
+                ->where('name', $search)
+                ->orWhere('domain', $search)
+                ->first();
+        }
 
         return $this->success($tenant);
     }
@@ -43,7 +53,7 @@ class TenantController extends Controller implements ITenantController
      */
     public function store(Request $request) {
         $rules = [
-            'name' => ['required', 'unique:landlord.tenants', 'max:255'],
+            'name' => ['required', 'alpha_dash', 'unique:landlord.tenants', 'max:255'],
             'domain' => ['required', 'unique:landlord.tenants', 'max:255'],
         ];
 
@@ -78,7 +88,7 @@ class TenantController extends Controller implements ITenantController
      */
     public function update(Request $request, $tenant) {
         $rules = [
-            'name' => 'unique:landlord.tenants,name,'.$tenant,
+            'name' => 'alpha_dash|unique:landlord.tenants,name,'.$tenant,
             'domain' => 'unique:landlord.tenants,domain,'.$tenant,
         ];
 

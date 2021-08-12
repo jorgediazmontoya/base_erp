@@ -27,11 +27,14 @@
         "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
+        "exclude-from-classmap": ["vendor\\nyholm\\psr7\\src\\Factory\\Psr17Factory.php"],
         "psr-4": {
             "App\\": "app/",
+            "Nyholm\\": "app/Factory",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": ["app/Factory/Psr17Factory.php"]
     },
     "autoload-dev": {
         "psr-4": {

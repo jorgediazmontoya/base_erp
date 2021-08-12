@@ -8,5 +8,6 @@ return [
     'internal-server-error' => 'Error inesperado, por favor intente luego.',
     'not-found' => 'No se encontró la URL especificada.',
     'no-content' => 'No hay contenido.',
+    'no-current-tenant' => 'Actualmente no hay un inquilino.',
 ];
 ?>

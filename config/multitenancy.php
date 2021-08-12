@@ -4,10 +4,8 @@ use App\Models\CustomTenant;
 use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Events\CallQueuedListener;
 use Illuminate\Broadcasting\BroadcastEvent;
-use Spatie\Multitenancy\Tasks\PrefixCacheTask;
 use Spatie\Multitenancy\Actions\MigrateTenantAction;
 use Illuminate\Notifications\SendQueuedNotifications;
-use Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask;
 use Spatie\Multitenancy\Actions\MakeTenantCurrentAction;
 use Spatie\Multitenancy\Actions\ForgetCurrentTenantAction;
 use Spatie\Multitenancy\Actions\MakeQueueTenantAwareAction;
@@ -42,6 +40,9 @@ return [
      * A valid task is any class that implements Spatie\Multitenancy\Tasks\SwitchTenantTask
      */
     'switch_tenant_tasks' => [
+        \App\TenantTask\FileSystemTask::class,
+        \App\TenantTask\LogTask::class,
+        \App\TenantTask\EmailTask::class,
         \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
         \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
     ],

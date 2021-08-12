@@ -35,10 +35,22 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'tenant_system' => [
+            'driver' => 'local',
+            'root' => null,
+            'visibility' => 'public',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
+        'files' => [
+            'driver' => 'local',
+            'root' => public_path('files'),
             'visibility' => 'public',
         ],
 

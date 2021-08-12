@@ -3,8 +3,6 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Spatie\Multitenancy\Http\Middleware\NeedsTenant;
-use Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession;
 
 class Kernel extends HttpKernel
 {

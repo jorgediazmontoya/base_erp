@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Api\Contracts;
 
-use App\Models\CustomTenant;
-use App\Traits\RestResponse;
+use App\Models\File;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
-interface ITenantController
+interface IFileController
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -28,25 +25,25 @@ interface ITenantController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  File $file
      * @return \Illuminate\Http\Response
      */
-    public function show(CustomTenant $tenant);
+    public function show(File $file);
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  File $file
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $tenant);
+    public function update(Request $request, File $file);
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  File  $file
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CustomTenant $tenant);
+    public function destroy(File $file);
 }
