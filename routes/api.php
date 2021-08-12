@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\CustomTenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Mail\EmailInvitation;
 
@@ -60,9 +61,20 @@ Route::post('/logout', function (Request $request) {
 /**
  * Users
  */
-Route::get('/users', [UserController::class, 'index'])->middleware('auth:api');
-Route::get('/users/{user}', [UserController::class, 'show'])->middleware('auth:api');
-Route::post('/users', [UserController::class, 'store'])->middleware('auth:api');
+Route::apiResource('users', UserController::class)
+    ->only(['index', 'show', 'store'])->middleware('auth:api');
+
+/**
+ *
+ * Roles
+ */
+Route::apiResource('roles', RoleController::class)->middleware('auth:api');
+
+/**
+ *
+ * Permissions
+ */
+Route::apiResource('permissions', PermissionController::class)->middleware('auth:api');
 
 Route::post('/send-mail', function (Request $request) {
     Mail::to($request->email)->send(new EmailInvitation());

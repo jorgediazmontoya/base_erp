@@ -38,13 +38,7 @@ class UserController extends Controller implements IUserController
      * @return void
      */
     public function index (Request $request) {
-        $startTime = microtime(true);
-
         $users = $this->repoUser->all($request);
-
-        $endTime = microtime(true);
-
-        dump($startTime, $endTime);
         return $this->success($users);
     }
 

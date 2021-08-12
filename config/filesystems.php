@@ -37,7 +37,7 @@ return [
 
         'tenant_system' => [
             'driver' => 'local',
-            'root' => null,
+            'root' => storage_path('app'),
             'visibility' => 'public',
         ],
 

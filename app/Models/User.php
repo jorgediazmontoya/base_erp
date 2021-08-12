@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,7 @@ use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable, UsesTenantConnection;
+    use HasFactory, HasApiTokens, Notifiable, HasRoles, UsesTenantConnection;
 
     /**
      * The attributes that are mass assignable.

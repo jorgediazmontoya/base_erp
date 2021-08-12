@@ -2,6 +2,7 @@
 
 namespace App\TenantTask;
 
+use App\Models\CustomTenant;
 use Spatie\Multitenancy\Models\Tenant;
 use Spatie\Multitenancy\Tasks\SwitchTenantTask;
 
@@ -36,7 +37,7 @@ class LogTask implements SwitchTenantTask
      * @param  mixed $tenant
      * @return void
      */
-    protected function setTenantLog(Tenant $tenant = null): void {
+    protected function setTenantLog(CustomTenant $tenant = null): void {
         config()->set('logging.channels.tenant_log.path', storage_path("logs/{$tenant->name}.log"));
     }
 }
