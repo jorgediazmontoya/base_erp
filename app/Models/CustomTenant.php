@@ -109,6 +109,11 @@ class CustomTenant extends Tenant
         $this->attributes['domain'] = strtolower($value);
     }
 
+    /**
+     * mail
+     *
+     * @return void
+     */
     public function mail () {
         return $this->hasOne(Mail::class, 'tenant_id');
     }
