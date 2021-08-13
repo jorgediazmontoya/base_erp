@@ -29,7 +29,9 @@ use App\Mail\EmailInvitation;
  *
  * Files
  */
-Route::middleware('auth:api')->apiResource('files', FileController::class);
+
+Route::apiResource('files', FileController::class)
+    ->middleware(['auth:api', 'permission:upload_files']);
 
 /**
  *
@@ -61,8 +63,9 @@ Route::post('/logout', function (Request $request) {
 /**
  * Users
  */
-Route::apiResource('users', UserController::class)
-    ->only(['index', 'show', 'store'])->middleware('auth:api');
+Route::get('/users', [UserController::class, 'index'])->middleware(['auth:api', 'permission:list_users']);
+Route::get('/users/{user}', [UserController::class, 'show'])->middleware(['auth:api']);
+Route::post('/users', [UserController::class, 'store'])->middleware(['auth:api']);
 
 /**
  *
@@ -81,4 +84,4 @@ Route::post('/send-mail', function (Request $request) {
     return response()->json([
         'info' => "Invitación enviada a {$request->email}"
     ]);
-})->middleware('auth:api');
+})->middleware(['auth:api', 'permission:send_mail']);

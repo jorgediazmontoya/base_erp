@@ -32,4 +32,13 @@ interface IUserController
      * @return void
      */
     public function store (StoreUserRequest $request);
+
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @param  mixed $user
+     * @return void
+     */
+    public function update (Request $request, User $user);
 }
