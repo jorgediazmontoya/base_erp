@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
@@ -72,6 +73,10 @@ class Handler extends ExceptionHandler
                 if ($exception instanceof NotFoundHttpException) {
                     $code = $exception->getStatusCode();
                     return $this->error($request->getPathInfo(), $exception, __('messages.not-found'), $code);
+                }
+
+                if ($exception instanceof AccessDeniedHttpException) {
+                    return $this->error($request->getPathInfo(), $exception, __('messages.forbidden'), Response::HTTP_FORBIDDEN);
                 }
 
                 if ($exception instanceof MethodNotAllowedHttpException) {

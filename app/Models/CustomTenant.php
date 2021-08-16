@@ -36,16 +36,16 @@ class CustomTenant extends Tenant
         });
 
         static::created (function (CustomTenant $tenant) {
-            dd(config('mail.mailers.smtp.transport'));
-            Mail::on('landlord')->create([
-                'transport' => env('MAIL_MAILER'),
-                'host' => env('MAIL_HOST'),
-                'port' => env('MAIL_PORT'),
-                'encryption' => env('MAIL_ENCRYPTION'),
-                'username' => env('MAIL_USERNAME'),
-                'password' => env('MAIL_PASSWORD'),
-                'tenant_id' => $tenant->id
-            ]);
+            $mail = new Mail();
+            $mail->setConnection('landlord');
+            $mail->transport = config('mail.mailers.smtp.transport');
+            $mail->host = config('mail.mailers.smtp.host');
+            $mail->port = config('mail.mailers.smtp.port');
+            $mail->encryption = config('mail.mailers.smtp.encryption');
+            $mail->username = config('mail.mailers.smtp.username');
+            $mail->password = config('mail.mailers.smtp.password');
+            $mail->tenant_id = $tenant->id;
+            $mail->save();
 
             $tenant->runMigrationsSeeders($tenant);
         });

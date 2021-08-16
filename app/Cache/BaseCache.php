@@ -3,7 +3,6 @@
 namespace App\Cache;
 
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\Base\BaseRepository;
 use App\Repositories\Contracts\IBaseRepository;
 
 abstract class BaseCache implements IBaseRepository {

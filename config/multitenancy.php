@@ -40,10 +40,10 @@ return [
      * A valid task is any class that implements Spatie\Multitenancy\Tasks\SwitchTenantTask
      */
     'switch_tenant_tasks' => [
+        \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
         \App\TenantTask\FileSystemTask::class,
         //\App\TenantTask\LogTask::class,
         \App\TenantTask\EmailTask::class,
-        \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
         \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
     ],
 

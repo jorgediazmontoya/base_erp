@@ -2,6 +2,7 @@
 
 namespace App\TenantTask;
 
+use App\Models\CustomTenant;
 use Spatie\Multitenancy\Models\Tenant;
 use Spatie\Multitenancy\Tasks\SwitchTenantTask;
 
@@ -18,9 +19,7 @@ class EmailTask implements SwitchTenantTask
      * @return void
      */
     public function makeCurrent(Tenant $tenant): void {
-        if ($tenant->mail != null) {
-            $this->setTenantEmail($tenant);
-        }
+        $this->setTenantEmail($tenant);
     }
 
     /**
@@ -29,7 +28,7 @@ class EmailTask implements SwitchTenantTask
      * @return void
      */
     public function forgetCurrent(): void {
-        $this->setTenantEmail(null);
+        //$this->setTenantEmail(null);
     }
 
     /**
@@ -38,7 +37,7 @@ class EmailTask implements SwitchTenantTask
      * @param  mixed $tenant
      * @return void
      */
-    protected function setTenantEmail(?Tenant $tenant): void {
+    protected function setTenantEmail(?CustomTenant $tenant): void {
         config()->set('mail.mailers.smtp.transport', $tenant->mail->transport);
         config()->set('mail.mailers.smtp.host', $tenant->mail->host);
         config()->set('mail.mailers.smtp.port', $tenant->mail->port);

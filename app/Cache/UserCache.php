@@ -24,7 +24,7 @@ class UserCache extends BaseCache {
      */
     public function all($request)
     {
-        return $this->cache::remember($this->key, self::TTL, function () use ($request) {
+        return $this->cache::remember($this->key, now()->addMinutes(150), function () use ($request) {
             return $this->repository->all($request);
         });
     }
@@ -37,7 +37,7 @@ class UserCache extends BaseCache {
      */
     public function save(Model $model)
     {
-        $this->cache::forget($this->key);
+        $this->cache::flush();
         return $this->repository->save($model);
     }
 }
