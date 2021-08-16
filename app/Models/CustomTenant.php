@@ -22,7 +22,7 @@ class CustomTenant extends Tenant
 
     protected $fillable = ['name', 'domain'];
 
-    protected $hidden = ['deleted_at', 'database'];
+    protected $hidden = ['deleted_at'];
 
     /**
      * boot
