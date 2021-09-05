@@ -55,7 +55,7 @@ Finalmente lo que debemos hacer es generar el secret client para nuestra aplicac
     php artisan passport:client --password
 ```
 
-Esto nos generará el client Id y el client Secret que debemos colocar en las variables de entorno adicionales que agregamos en el **.env**
+Esto nos generará el client_Id y el client_Secret que debemos colocar en las variables de entorno adicionales que agregamos en el **.env**
 
 Luego ya podemos dejar las variables de entorno **DB_CONNECTION** y **DB_DATABASE**, como estaban anteriormente.
 
