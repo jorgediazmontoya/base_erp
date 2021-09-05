@@ -32,7 +32,7 @@ Como notaran, no necesitamos que la variable *DB_DATABASE* tenga el nombre de la
 Tambien observamos la aparación de 2 variables nuevas: *passport_personal_access_client_id*
 *passport_personal_access_client_secret*
 
-Que mas adelante veremos que valor tendrán.
+Más adelante veremos que valor tendrán.
 
 Una vez preparado esto, ejecutamos:
 
